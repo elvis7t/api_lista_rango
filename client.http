@@ -1,4 +1,4 @@
-@baseUrl = http://10.255.255.254:3008
+@baseUrl = http://localhost:3007
 @authToken = {{authenticate.response.body.access_token}}
 ###
 # @name create_account
@@ -33,7 +33,7 @@ Authorization: Bearer {{authToken}}
 }
 ###
 # @name fetch_recent_questions
-GET {{baseUrl}}/questions?page=1
+GET {{baseUrl}}/helth
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
