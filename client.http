@@ -33,7 +33,7 @@ Authorization: Bearer {{authToken}}
 }
 ###
 # @name fetch_recent_questions
-GET {{baseUrl}}/helth
+GET {{baseUrl}}/health
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
