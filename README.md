@@ -1,4 +1,4 @@
-# Goomer Lista Rango – API Back-end
+# API Lista Rango – API Back-end
 
 API em Node.js + TypeScript para gerenciar **restaurantes, produtos, promoções e cardápio** de um restaurante, com foco em código simples, manutenível e pronto para produção.
 
