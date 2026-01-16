@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import { main } from '@/app'
 
 const { app, env } = main()
+console.log("🚀 ~ env:", env)
 
 app
   .listen({

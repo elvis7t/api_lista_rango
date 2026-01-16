@@ -2,6 +2,13 @@
   "name": "goomer_lista_rango",
   "version": "1.0.0",
   "description": "Challenge Goomer dev",
+  "license": "MIT",
+  "author": "Elvis Leite",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "homepage": "https://github.com/elvis7t/goomer_lista_rango#readme",
   "bugs": {
     "url": "https://github.com/elvis7t/goomer_lista_rango/issues"
@@ -10,10 +17,6 @@
     "type": "git",
     "url": "git+https://github.com/elvis7t/goomer_lista_rango.git"
   },
-  "license": "MIT",
-  "author": "Elvis Leite",
-  "type": "module",
-  "main": "index.js",
   "scripts": {
     "build": "tsup src --out-dir build --format esm",
     "lint": "eslint src --ext .ts --fix",

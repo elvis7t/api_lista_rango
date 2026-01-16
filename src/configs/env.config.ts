@@ -21,9 +21,9 @@ export class EnvConfig {
         const configSchema = z.object({
             NODE_ENV: z
                 .enum(['development', 'test', 'production'])
-                .default('development'),
+                .default('production'),
             API_PORT: z.coerce.number().default(3333),
-            DEV_PORT: z.coerce.number().default(3007),
+            DEV_PORT: z.coerce.number().default(3004),
             CORS_ORIGIN: z.string().default('*'),
         })
 
