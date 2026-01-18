@@ -8,10 +8,12 @@ WORKDIR /home/node/app
 COPY package*.json ./
 
 # Instala dependências
-RUN npm install
+RUN npm ci --omit=dev
 
 # Copia o restante da aplicação
 COPY . .
+
+RUN npm run build
 
 # Copia o script de entrada e dá permissão
 COPY entrypoint.sh /entrypoint.sh

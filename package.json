@@ -1,7 +1,7 @@
 {
-  "name": "goomer_lista_rango",
+  "name": "api_lista_rango",
   "version": "1.0.0",
-  "description": "Challenge Goomer dev",
+  "description": "Challenge dev",
   "license": "MIT",
   "author": "Elvis Leite",
   "type": "module",
@@ -9,13 +9,13 @@
   "engines": {
     "node": ">=22.0.0"
   },
-  "homepage": "https://github.com/elvis7t/goomer_lista_rango#readme",
+  "homepage": "https://github.com/elvis7t/api_lista_rango#readme",
   "bugs": {
-    "url": "https://github.com/elvis7t/goomer_lista_rango/issues"
+    "url": "https://github.com/elvis7t/api_lista_rango/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elvis7t/goomer_lista_rango.git"
+    "url": "git+https://github.com/elvis7t/api_lista_rango.git"
   },
   "scripts": {
     "build": "tsup src --out-dir build --format esm",
@@ -32,7 +32,7 @@
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "tsup": "^8.5.1",
-    "tsx": "^4.20.6",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
