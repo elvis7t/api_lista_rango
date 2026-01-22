@@ -16,7 +16,13 @@ export class DatabaseConfig {
             useNullAsDefault: true,
             migrations: {
                 extension: 'ts',
-                directory: resolve(process.cwd(), 'db', 'migrations'),
+                directory: resolve(
+                    process.cwd(),
+                    'src',
+                    'infrastructure',
+                    'database',
+                    'migrations',
+                ),
             },
         })
     }

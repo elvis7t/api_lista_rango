@@ -34,8 +34,8 @@
     "declarationMap": true
   },
   "include": [
-    "src/**/*",
-    "src/routers"
+    "src/**/*",    
+    "knexfile.ts"
   ],
   "exclude": [
     "node_modules",

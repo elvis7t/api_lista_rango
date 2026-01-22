@@ -6,9 +6,9 @@ container.register('EnvConfig', {
   useClass: EnvConfig,
 })
 
-const dbConfig = container.resolve(DatabaseConfig)
+const databaseConfig = container.resolve<DatabaseConfig>(DatabaseConfig)
 
 export default {
-  development: dbConfig.getConnection().client.config,
-  test: dbConfig.getConnection().client.config,
+  development: databaseConfig.getConnection().client.config,
+  test: databaseConfig.getConnection().client.config,
 }
