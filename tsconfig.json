@@ -34,8 +34,9 @@
     "declarationMap": true
   },
   "include": [
-    "src/**/*",    
-    "knexfile.ts"
+    "src/**/*",
+    "knexfile.ts",
+    "vite.config.ts"
   ],
   "exclude": [
     "node_modules",

@@ -1,18 +1,22 @@
 import 'reflect-metadata'
 import { main } from '@/app'
 
-const { app, env } = main()
-console.log("🚀 ~ env:", env)
+const startApp = async () => {
+  try {
+    const { app, env } = await main()
+    console.log("🚀 ~ env:", env)
 
-app
-  .listen({
-    port: env.NODE_ENV === 'development' ? env.DEV_PORT : env.API_PORT,
-    host: '0.0.0.0',
-  })
-  .then((address) => {
+    const address = await app.listen({
+      port: env.NODE_ENV === 'development' ? env.DEV_PORT : env.API_PORT,
+      host: '0.0.0.0',
+    })
+    
     console.info(`🎉 API is running on port: ${address}`)
-  })
-  .catch((error) => {
-    console.error('❌ Error on starting application:', error.stack)
+    console.info(`📚 Swagger documentation: http://localhost:${env.NODE_ENV === 'development' ? env.DEV_PORT : env.API_PORT}/docs`)
+  } catch (error: unknown) {
+    console.error('❌ Error on starting application:', error instanceof Error ? error.stack : String(error))
     process.exit(1)
-  })
+  }
+}
+
+startApp()

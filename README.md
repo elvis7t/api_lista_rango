@@ -261,7 +261,7 @@ Use esta seção como **plano de ação** e checklist conforme for concluindo o 
 - [x] Criar estrutura básica do projeto (Node + TS).
 - [x] Configurar lint, scripts de build e dev.
 - [x] Subir containers de Postgres e Redis via Docker Compose.
-- [ ] Configurar framework de testes (Jest/Vitest).
+- [x] Configurar framework de testes (Jest/Vitest).
 - [ ] Criar rota de health-check.
 - [ ] Adicionar middlewares básicos:
   - [ ] Logger de requisição/resposta.
