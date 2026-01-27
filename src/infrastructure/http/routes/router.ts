@@ -1,8 +1,9 @@
 import { FastifyInstance } from 'fastify'
-import { injectable } from 'tsyringe'
+import { inject, injectable } from 'tsyringe'
+import { Router as RouterInterface } from '@/infrastructure/interfaces'
 
 @injectable()
-export class Router {
+export class Router implements RouterInterface {
     constructor() {}
 
     public registerRoutes(

@@ -3,8 +3,7 @@ import { injectable } from 'tsyringe'
 
 @injectable()
 export class SwaggerConfig {
-  public async register(app: FastifyInstance) {
-    // Ler variáveis de ambiente diretamente
+  public async register(app: FastifyInstance) {    
     const port = process.env.NODE_ENV === 'development' 
       ? process.env.DEV_PORT || '3007'
       : process.env.API_PORT || '3000'

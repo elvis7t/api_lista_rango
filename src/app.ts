@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import { container } from 'tsyringe'
 import './container'
 import { EnvConfig, FastifyConfig, SwaggerConfig } from '@/configs'
-import { Router } from '@/infrastructure/http/routes/index'
+import { Router } from '@/infrastructure/http/routes/router'
 
 export const main = async () => {
     const app = container.resolve(FastifyConfig).app()

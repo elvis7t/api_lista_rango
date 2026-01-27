@@ -262,12 +262,13 @@ Use esta seção como **plano de ação** e checklist conforme for concluindo o 
 - [x] Configurar lint, scripts de build e dev.
 - [x] Subir containers de Postgres e Redis via Docker Compose.
 - [x] Configurar framework de testes (Jest/Vitest).
-- [ ] Criar rota de health-check.
+- [X] Criar rota de health-check.
+- [X] Configurar Swagger.
 - [ ] Adicionar middlewares básicos:
   - [ ] Logger de requisição/resposta.
   - [ ] Tratamento global de erros (formato padrão de resposta).
   - [ ] Parser de JSON.
-- [ ] Criar pelo menos 1 teste simples (ex.: health-check).
+- [X] Criar pelo menos 1 teste simples (ex.: health-check).
 
 ---
 
