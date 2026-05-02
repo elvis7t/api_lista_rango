@@ -1,10 +1,15 @@
 import { FastifyInstance } from 'fastify'
 import { inject, injectable } from 'tsyringe'
 import { Router as RouterInterface } from '@/infrastructure/interfaces'
+import { ConseptionRouter } from './conseption.router'
 
 @injectable()
 export class Router implements RouterInterface {
-    constructor() {}
+    constructor(
+        @inject(ConseptionRouter) private conseptionRouter: ConseptionRouter
+    ) {
+        this.conseptionRouter = conseptionRouter
+    }
 
     public registerRoutes(
         app: FastifyInstance,
@@ -28,12 +33,14 @@ export class Router implements RouterInterface {
                     }
                 }
             }, async (_request, reply) => {
-                return reply.status(200).send({ 
+                return reply.status(200).send({
                     status: 'ok',
                     timestamp: new Date().toISOString()
                 })
             })
         })
+
+        app.register(this.conseptionRouter.registerRoutes.bind(this.conseptionRouter), { prefix: '/v1' })
 
         if (done) {
             done()

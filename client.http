@@ -40,4 +40,22 @@ Authorization: Bearer {{authToken}}
 ###
 
 GET {{baseUrl}}/health
+###
+POST {{baseUrl}}/v1/conseption
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
+{
+  "Harmonizacao": [
+    { "produto": 1, "harmonizacoes": "1" },
+    { "produto": 2, "harmonizacoes": "1,2" },
+    { "produto": 3, "harmonizacoes": "2,3" },
+    { "produto": 4, "harmonizacoes": "1,3" },
+    { "produto": 5, "harmonizacoes": "1,2,3" },
+    { "produto": 6, "harmonizacoes": "2" },
+    { "produto": 7, "harmonizacoes": "3" },
+    { "produto": 8, "harmonizacoes": "1,2,3" },
+    { "produto": 9, "harmonizacoes": "1" },
+    { "produto": 10, "harmonizacoes": "2,3" }
+  ]
+}

@@ -8,7 +8,8 @@ export class SwaggerConfig {
       ? process.env.DEV_PORT || '3007'
       : process.env.API_PORT || '3000'
 
-    await app.register(import('@fastify/swagger'), {
+    const swaggerPlugin = await import('@fastify/swagger')
+    await app.register(swaggerPlugin, {
       swagger: {
         info: {
           title: 'API Lista Rango',
@@ -53,7 +54,8 @@ export class SwaggerConfig {
       }
     })
 
-    await app.register(import('@fastify/swagger-ui'), {
+    const swaggerUiPlugin = await import('@fastify/swagger-ui')
+    await app.register(swaggerUiPlugin, {
       routePrefix: '/docs',
       uiConfig: {
         docExpansion: 'list',
@@ -65,8 +67,7 @@ export class SwaggerConfig {
       },
       staticCSP: true,
       transformStaticCSP: (header) => header,
-      transformSpecification: (swaggerObject, request, reply) => { return swaggerObject },
-      transformSpecificationClonePath: true
+      transformSpecification: (swaggerObject, request, reply) => { return swaggerObject }
     })
   }
 }
