@@ -1,0 +1,124 @@
+@baseUrl = http://localhost:3071
+@prometheusUrl = http://localhost:9090
+@email = demo@escala.ai
+@password = demo12345
+
+###
+# @name healthcheck
+GET {{baseUrl}}/v1/health
+
+###
+# @name swagger_json
+GET {{baseUrl}}/docs/json
+
+###
+# @name swagger_ui
+GET {{baseUrl}}/docs
+
+###
+# @name ready_check
+GET {{baseUrl}}/v1/ready
+
+###
+# @name metrics
+GET {{baseUrl}}/metrics
+
+###
+# Auth
+
+###
+# @name register
+POST {{baseUrl}}/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+# @name login
+POST {{baseUrl}}/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+# @name login_invalid_password
+POST {{baseUrl}}/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "wrong-password"
+}
+
+###
+# @name refresh
+POST {{baseUrl}}/v1/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{login.response.body.$.data.refreshToken}}"
+}
+
+###
+# @name refresh_invalid
+POST {{baseUrl}}/v1/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "invalid-refresh-token"
+}
+
+###
+# @name logout
+POST {{baseUrl}}/v1/auth/logout
+Authorization: Bearer {{login.response.body.$.data.accessToken}}
+Content-Type: application/json
+
+{
+  "refreshToken": "{{login.response.body.$.data.refreshToken}}"
+}
+
+###
+# @name logout_missing_token
+POST {{baseUrl}}/v1/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{login.response.body.$.data.refreshToken}}"
+}
+
+###
+# Observabilidade
+
+###
+# @name observability_health_with_req_id
+GET {{baseUrl}}/v1/health
+X-Request-Id: log-monitor-demo
+
+###
+# @name observability_ready_with_req_id
+GET {{baseUrl}}/v1/ready
+X-Request-Id: postgres-down-demo
+
+###
+# @name observability_prometheus_ready_probe
+GET {{prometheusUrl}}/api/v1/query?query=probe_success%7Bjob%3D%22escala-ai-api-readiness%22%7D
+
+###
+# @name observability_prometheus_http_5xx_rate
+GET {{prometheusUrl}}/api/v1/query?query=sum(rate(http_request_duration_seconds_count%7Bstatus_code%3D~%225..%22%7D%5B5m%5D))%20or%20vector(0)
+
+###
+# @name observability_prometheus_http_p95_by_route
+GET {{prometheusUrl}}/api/v1/query?query=histogram_quantile(0.95%2C%20sum%20by%20(le%2C%20route)%20(rate(http_request_duration_seconds_bucket%5B5m%5D)))
+
+###
+# @name observability_sentry_smoke
+GET {{baseUrl}}/__debug/sentry-error
+X-Request-Id: sentry-local-smoke

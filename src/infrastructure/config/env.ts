@@ -1,41 +1,74 @@
-import { config } from 'dotenv';
-import { resolve } from 'path';
-import { z } from 'zod';
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
-// Carrega o arquivo .env correto
-if (process.env.NODE_ENV === 'test') {
-    config({ path: resolve(process.cwd(), '.env.test') });
-} else {
-    config({ path: resolve(process.cwd(), '.env') });
+import { config } from "dotenv";
+import { z } from "zod";
+
+const isTest = process.env.NODE_ENV === "test";
+const envFile = isTest ? ".env.test" : ".env";
+const envPath = resolve(process.cwd(), envFile);
+
+if (existsSync(envPath)) {
+    config({ path: envPath });
 }
+
+const requiredString = (name: string) => z.string().trim().min(1, `${name} is required`);
+const optionalString = z.preprocess(
+    (value) => (typeof value === "string" && value.trim().length === 0 ? undefined : value),
+    z.string().trim().optional(),
+);
+const requiredStringWithTestDefault = (name: string, defaultValue: string) => {
+    const schema = requiredString(name);
+
+    return isTest ? schema.default(defaultValue) : schema;
+};
+const testDatabaseUrl = "postgresql://user:password@localhost:5432/escalaai_test";
+const testJwtSecret = "test-secret";
 
 const envSchema = z.object({
-    NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-    API_PORT: z.coerce.number().default(3070),
-    DEV_PORT: z.coerce.number().default(3077),
-    API_HOST: z.string().default('0.0.0.0'),
-    CORS_ORIGIN: z.string().default('*'),
-    DATABASE_CLIENT: z.string().default(''),
-    DATABASE_URL: z.string().default('postgres://user:password@db:5432/apisolid'),
-    DATABASE_URL_LOCAL: z.string().default('postgres://user:password@db:5432/apisolid'),
-    DATABASE_PORT: z.coerce.number().default(5432),
-    DATABASE_USERNAME: z.string().default('root'),
-    DATABASE_PASSWORD: z.string().min(1, 'DATABASE_PASSWORD é obrigatório'),
-    DATABASE_NAME: z.string().default('apisolid'),
-    JWT_SECRET: z.string().min(1, 'JWT_SECRET é obrigatório'),
+    API_PORT: z.coerce.number().int().positive().default(3000),
+    API_HOST: z.string().trim().default("0.0.0.0"),
+    APP_VERSION: z.string().trim().default("dev"),
+    CORS_ORIGIN: z.string().trim().default("*"),
+    DATABASE_CLIENT: z.string().trim().default("postgresql"),
+    DATABASE_HOST: z.string().trim().default("localhost"),
+    DATABASE_NAME: z.string().trim().default("escalaai"),
+    DATABASE_PASSWORD: z.string().trim().default("password"),
+    DATABASE_PORT: z.coerce.number().int().positive().default(5432),
+    DATABASE_URL: requiredStringWithTestDefault("DATABASE_URL", testDatabaseUrl),
+    DATABASE_URL_LOCAL: optionalString,
+    DATABASE_USER: z.string().trim().default("user"),
+    DEV_PORT: z.coerce.number().int().positive().default(3007),
+    ENABLE_SENTRY_TEST_ROUTE: z.enum(["true", "false"]).default("false"),
+    JWT_ACCESS_TTL: z.string().trim().default("15m"),
+    JWT_REFRESH_TTL: z.string().trim().default("30d"),
+    JWT_SECRET: requiredStringWithTestDefault("JWT_SECRET", testJwtSecret),
+    LOG_LEVEL: z.string().trim().default("info"),
+    NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+    READY_DB_TIMEOUT_MS: z.coerce.number().int().positive().default(500),
+    SENTRY_DSN: z.string().trim().default(""),
+    SENTRY_ENABLE_LOGS: z.enum(["true", "false"]).default("false"),
+    SENTRY_ENVIRONMENT: optionalString,
+    SENTRY_LOG_LEVELS: z.string().trim().default("warn,error,fatal"),
+    SENTRY_RELEASE: optionalString,
+    SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).default(0),
 });
 
-const _env = envSchema.safeParse(process.env);
+const parsedEnv = envSchema.safeParse(process.env);
 
-if (!_env.success) {
-    console.error('❌ Erro de validação de ambiente:', _env.error.format());
-    throw new Error('Falha ao carregar as variáveis de ambiente.');
+if (!parsedEnv.success) {
+    console.error("Environment validation error:", parsedEnv.error.format());
+    throw new Error("Failed to load environment variables.");
 }
 
-// Exporta as variáveis de forma tipada diretamente
+const data = parsedEnv.data;
+
 export const env = {
-    ..._env.data,
-    DATABASE_URL: process.env.NODE_ENV === 'production'
-        ? _env.data.DATABASE_URL
-        : _env.data.DATABASE_URL_LOCAL,
+    ...data,
+    DATABASE_URL:
+        data.NODE_ENV === "production"
+            ? data.DATABASE_URL
+            : (data.DATABASE_URL_LOCAL ?? data.DATABASE_URL),
 };
+
+export type Env = typeof env;
